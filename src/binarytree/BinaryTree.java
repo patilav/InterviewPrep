@@ -21,9 +21,15 @@ public class BinaryTree {
 
 		/// System.out.println(checkIsoMorphicTree(root.left, root.right));
 
+		System.out.println("Level Order Traversal Print By Level");
 		BinarySearchTree.levelOrderTraversalPrintByLevel(root);
 		// printLongestPath(root);
+		System.out.println("Vertical Order Traversal");
 		printVerticalOrder(root);
+		
+		System.out.println("Lowest Common Ancestor");
+		TreeNode lca = lowestCommonAncestor(root, 15, 17);
+		System.out.println(lca);
 	}
 
 	public static boolean checkIsoMorphicTree(TreeNode root1, TreeNode root2) {
@@ -167,20 +173,20 @@ public class BinaryTree {
 	// }
 
 	public static void printVerticalOrder(TreeNode root) {
-		if(root == null){
+		if (root == null) {
 			return;
 		}
-		
+
 		int leftHD = findMinHorizontalDistance(root);
 		int rightHD = findMaxHorizontalDistance(root);
 		HashMap<Integer, ArrayList<Integer>> distanceMap = new HashMap<>();
 		getVerticalOrder(root, 0, distanceMap);
 		System.out.println(distanceMap);
-		
-		for(int i=leftHD; i<=rightHD; i++){
+
+		for (int i = leftHD; i <= rightHD; i++) {
 			ArrayList<Integer> map = distanceMap.get(i);
-			for(int data: map){
-				System.out.print(data+" ");
+			for (int data : map) {
+				System.out.print(data + " ");
 			}
 			System.out.println();
 		}
@@ -225,5 +231,24 @@ public class BinaryTree {
 
 		getVerticalOrder(root.left, hd - 1, distanceMap);
 		getVerticalOrder(root.right, hd + 1, distanceMap);
+	}
+
+	public static TreeNode lowestCommonAncestor(TreeNode root, int p, int q) {
+		if (root == null)
+			return null;
+
+		if (root.data == p || root.data == q)
+			return root;
+
+		TreeNode l = lowestCommonAncestor(root.left, p, q);
+		TreeNode r = lowestCommonAncestor(root.right, p, q);
+
+		if (l != null && r != null) {
+			return root;
+		} else if (l == null && r == null) {
+			return null;
+		} else {
+			return l == null ? r : l;
+		}
 	}
 }
